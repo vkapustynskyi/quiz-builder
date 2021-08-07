@@ -1,0 +1,104 @@
+/*!
+ * pure-dialog - v@version@
+ * https://github.com/john-doherty/pure-dialog
+ */
+pure-dialog {
+    z-index: 999;
+    backface-visibility: hidden;
+    perspective: 1000;
+    transform: translateZ(0);
+    transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    font-size: 14px;
+    font-family: tahoma;
+    visibility: hidden;
+    opacity: 0;
+}
+
+pure-dialog[closing] {
+    visibility: hidden;
+    opacity: 0;
+}
+
+pure-dialog[open] {
+    visibility: visible;
+    opacity: 1;
+}
+
+pure-dialog[open][modal] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(50, 50, 50, 0.6);
+}
+
+pure-dialog .pure-dialog-close {
+    height: 12px;
+    width: 12px;
+    background-image: url('img/icon-close.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+}
+
+pure-dialog .pure-dialog-container {
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px; 
+    min-width: 260px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06),0 2px 32px rgba(0,0,0,.16)!important;
+}
+
+pure-dialog .pure-dialog-title {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 20px 20px 6px 20px;
+    text-align: center; 
+    font-weight: bold;
+    user-select: none;
+}
+
+pure-dialog .pure-dialog-body {
+    padding: 0 20px 20px 20px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+}
+
+pure-dialog .pure-dialog-buttons {
+    display: flex;
+    background: #fff;
+}
+
+pure-dialog .pure-dialog-button {
+    border: 0;
+    outline: 0;
+    font-size: 14px;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    border-radius: 0;
+    background: transparent;
+    color: #157AFB;
+    border-top: 1px solid #ccc;
+    margin: 0;
+    padding: 12px;
+    line-height: normal;
+    height: auto;
+}
+
+pure-dialog .pure-dialog-button {
+    border-right: 1px solid #ccc; 
+}
+pure-dialog .pure-dialog-button:nth-last-child(1) {
+    border-right: 0;
+}
