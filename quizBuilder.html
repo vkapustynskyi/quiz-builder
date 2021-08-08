@@ -8,14 +8,12 @@
     <link rel="stylesheet" href="css/pure-dialog.css">
     <link rel="stylesheet" href="css/quizBuilder.css">
 
-    <link rel="preload" href="src/correct.png" as="image">
-    <link rel="preload" href="src/wrong.png" as="image">
+    <link rel="preload" href="https://bit.ly/3hnnVpX" as="image"> <!-- RIGHT IMAGE -->
+    <link rel="preload" href="https://bit.ly/2ApIim1" as="image"> <!-- WRONG IMAGE -->
 
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/document-register-element.js"></script>
     <script src="js/pure-dialog.js"></script>
-    <script src="js/quizBuider.js"></script>
-    <script src="js/general.js"></script>
 
     <title>Quiz Builder</title>
 
@@ -25,7 +23,7 @@
 
 </head>
 <body>
-<div class="task-wrapper" id="taskWrapper">
+<div class="task-wrapper" id="taskWrapper" lesson="1">
     <ol class="task-container" id="task1">
 
     </ol>
@@ -33,9 +31,11 @@
 
     </ol>
     <pure-dialog id="notAllChecked" title="" buttons="Ок">
-        Хеeeй, ну вибери хоч навмання ❤️
+            Хеeeй, ну вибери хоч навмання ❤️
     </pure-dialog>
-    <div class="popup-background"></div>
+    <div class="popup-background" id="popup-background"></div>
 </div>
 </body>
+<script src="js/quizBuilder.js"></script>
+<script src="js/general.js"></script>
 </html>
