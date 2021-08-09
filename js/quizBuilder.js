@@ -27,12 +27,19 @@ function shuffle(baseOfTests) {
 function buildTest(baseOfTests, htmlWrapperId) {
     TASK_COUNTER++;
 
+    let isResultShown = showResultsIfStored(baseOfTests, htmlWrapperId);
+    if (isResultShown === true) {
+        return;
+    }
+
+
     baseOfTests = shuffle(baseOfTests);
 
     let htmlWrapper = document.getElementById(htmlWrapperId);
-
+    console.log("return?");
 
     baseOfTests.forEach((question, questionNumber) => {
+
         let options = [];
         let genereted_test_item = [];
         LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
@@ -61,6 +68,18 @@ function buildTest(baseOfTests, htmlWrapperId) {
                           <button class="button" id="${htmlWrapperId}-submit" onclick="checkTest(this)">Перевірити</button>
                           <button class="button" id="${htmlWrapperId}-showErrors" style="display:none">Показати неправильні</button>`);
 
+}
+
+function showResultsIfStored(baseOfTests, htmlWrapperId){
+    LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
+    let taskInnerHtml = localStorage.getItem("lesson" + LESSON_NUMBER + htmlWrapperId);
+
+    console.log("lesson" + LESSON_NUMBER + htmlWrapperId);
+    if (taskInnerHtml === null){
+        return false;
+    }
+    document.getElementById(htmlWrapperId).innerHTML = taskInnerHtml;
+    return true;
 }
 
 function setEventListenerOnRadio() {
@@ -124,22 +143,27 @@ function checkTest(buttonFromTaskContainer){
         let imageLabel = USER_ANSWERS_INPUTS[i].parentNode.querySelector("label");
 
         if (baseOfTest[i].correctAnswer !== USER_ANSWERS_INPUTS[i].getAttribute("value")){
-            imageLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/2ApIim1\"/>";
+
+            imageLabel.style.fontWeight = "bold";
+            imageLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/2ApIim1\" alt='wrong'/>";
+
+
             let correct_answer_input = USER_ANSWERS_INPUTS[i]
                 .parentNode.parentNode.querySelector("input[value='" + baseOfTest[i].correctAnswer + "']");
-
-            correct_answer_input.parentNode
-                .querySelector("label").innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/3hnnVpX\"/>";
+            let correctInputLabel = correct_answer_input.parentElement.querySelector("label");
+            correctInputLabel.style.color = "#70b747";
+            correctInputLabel.style.fontWeight = "bold";
+            correctInputLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/3hnnVpX\" alt='right'/>";
 
         } else {
-            imageLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/3hnnVpX\"/>";
+            imageLabel.style.color = "#70b747";
+            imageLabel.style.fontWeight = "bold";
+            imageLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/3hnnVpX\" alt='right'/>";
         }
 
     }
 
-
-
-    // localStorage.clear();
+    localStorage.clear();
 
     localStorage.setItem("lesson" + LESSON_NUMBER + taskToCheckId, taskToCheck.innerHTML);
 
