@@ -10,13 +10,14 @@ POPUPok.onclick = function (){
     hidePopUp();
 }
 
-function shuffle(baseOfTests) {
+function shuffle(baseOfTests, htmlWrapperId) {
 
-    let baseFromStorage = localStorage.getItem("base_from_storage");
+    let baseFromStorage = localStorage.getItem("base_lesson" + LESSON_NUMBER + htmlWrapperId);
 
     if (baseFromStorage == null) {
         baseOfTests.sort(() => Math.random() - 0.5);
-        localStorage.setItem("base_from_storage", JSON.stringify(baseOfTests));
+
+        localStorage.setItem("base_lesson" + LESSON_NUMBER + htmlWrapperId, JSON.stringify(baseOfTests));
         return baseOfTests;
     } else {
         baseOfTests = JSON.parse(baseFromStorage);
@@ -26,23 +27,23 @@ function shuffle(baseOfTests) {
 
 function buildTest(baseOfTests, htmlWrapperId) {
     TASK_COUNTER++;
+    LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
 
     let isResultShown = showResultsIfStored(baseOfTests, htmlWrapperId);
     if (isResultShown === true) {
+        INPUTS_ID = document.querySelectorAll("#" + htmlWrapperId + " input").length;
         return;
     }
 
-
-    baseOfTests = shuffle(baseOfTests);
+    baseOfTests = shuffle(baseOfTests, htmlWrapperId);
 
     let htmlWrapper = document.getElementById(htmlWrapperId);
-    console.log("return?");
 
     baseOfTests.forEach((question, questionNumber) => {
 
         let options = [];
         let genereted_test_item = [];
-        LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
+
 
         for (option in question.options) {
             options.push(
@@ -74,7 +75,6 @@ function showResultsIfStored(baseOfTests, htmlWrapperId){
     LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
     let taskInnerHtml = localStorage.getItem("lesson" + LESSON_NUMBER + htmlWrapperId);
 
-    console.log("lesson" + LESSON_NUMBER + htmlWrapperId);
     if (taskInnerHtml === null){
         return false;
     }
@@ -92,8 +92,9 @@ function setEventListenerOnRadio() {
 }
 
 function markRadioAsCheckedIfIsExistInLocalStorage(){
+    let taskWrapper = document.getElementById("taskWrapper");
     let questionCounter =
-        document.querySelectorAll(" div.task-wrapper ol.task-container li.questionContainer").length;
+        taskWrapper.querySelectorAll(" div.task-wrapper ol.task-container li.questionContainer").length;
 
     for (let taskNumber = 1; taskNumber <= TASK_COUNTER; taskNumber ++) {
         for (let questionNumber = 0; questionNumber < questionCounter; questionNumber++) {
@@ -102,9 +103,6 @@ function markRadioAsCheckedIfIsExistInLocalStorage(){
             if (item !== null){
                 let radioById = document.getElementById(item.valueOf());
                 radioById.checked = true;
-            }
-            else{
-                break;
             }
         }
 
@@ -116,6 +114,7 @@ function updateRadioStateInLocalStorage(radio) {
 }
 
 function checkTest(buttonFromTaskContainer){
+
     let calledButtonId = buttonFromTaskContainer.getAttribute("id");
     let seperatorIndex = calledButtonId.indexOf("-");
 
@@ -123,11 +122,15 @@ function checkTest(buttonFromTaskContainer){
 
     let taskToCheck = document.querySelector("div.task-wrapper #" + taskToCheckId);
     const USER_ANSWERS_INPUTS = taskToCheck.querySelectorAll("input:checked");
+    let GRADE = 0;
+    let GRADE_DISPLAY = taskToCheck.querySelector("div.score");
 
     if (USER_ANSWERS_INPUTS.length !== taskToCheck.querySelectorAll("li.questionContainer").length){
         showPopUpNotAllChecked(taskToCheck);
         return;
     }
+
+    buttonFromTaskContainer.remove();
 
     let allInputsParentsInTask = taskToCheck.querySelectorAll("div.pretty");
 
@@ -135,13 +138,12 @@ function checkTest(buttonFromTaskContainer){
         allInputsParentsInTask[i].classList.add("p-locked");
     }
 
-    let baseOfTest = JSON.parse(localStorage.getItem("base_from_storage"));
+    let baseOfTest = JSON.parse(localStorage.getItem("base_lesson" + LESSON_NUMBER + taskToCheckId));
     for (let i = 0; i < USER_ANSWERS_INPUTS.length; i++) {
 
         USER_ANSWERS_INPUTS[i].parentElement.style.border = "solid #5d16a2 2px";
 
         let imageLabel = USER_ANSWERS_INPUTS[i].parentNode.querySelector("label");
-
         if (baseOfTest[i].correctAnswer !== USER_ANSWERS_INPUTS[i].getAttribute("value")){
 
             imageLabel.style.fontWeight = "bold";
@@ -156,6 +158,7 @@ function checkTest(buttonFromTaskContainer){
             correctInputLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/3hnnVpX\" alt='right'/>";
 
         } else {
+            GRADE++;
             imageLabel.style.color = "#70b747";
             imageLabel.style.fontWeight = "bold";
             imageLabel.innerHTML += " <img class=\"right-wrong-test-img\" src=\"https://bit.ly/3hnnVpX\" alt='right'/>";
@@ -163,13 +166,44 @@ function checkTest(buttonFromTaskContainer){
 
     }
 
-    localStorage.clear();
+    GRADE_DISPLAY.innerHTML += "Результат: " + GRADE + "/" + USER_ANSWERS_INPUTS.length;
+    GRADE_DISPLAY.style.visibility = "visible";
+    GRADE_DISPLAY.style.opacity = 100;
 
+    let saveBasesOfTests = [];
+    let saveResults = [];
+
+    for (let i = 1; i <= TASK_COUNTER; i++) {
+        let baseExist = localStorage.getItem("base_lesson" + LESSON_NUMBER + "task" + i)
+        let resultsExist = localStorage.getItem("lesson" + LESSON_NUMBER + "task" + i)
+        if (baseExist){
+            saveBasesOfTests[i] = baseExist;
+        }
+        if(resultsExist){
+            saveResults[i] = resultsExist;
+        }
+    }
+
+    localStorage.clear();
     localStorage.setItem("lesson" + LESSON_NUMBER + taskToCheckId, taskToCheck.innerHTML);
+
+    for (let i = 1; i <= TASK_COUNTER; i++) {
+        if (saveBasesOfTests[i]){
+            localStorage.setItem("base_lesson" + LESSON_NUMBER + "task" + i, saveBasesOfTests[i]);
+        }
+        if (saveResults[i]){
+            localStorage.setItem("lesson" + LESSON_NUMBER + "task" + i, saveResults[i]);
+        }
+    }
 
 }
 
+
+
 function showPopUpNotAllChecked(taskToCheck){
+
+    document.body.style.overflow = "hidden";
+
     POPUP.title = capitalizeFirstLetter(taskToCheck.id);
     POPUP.style.visibility = "visible";
     POPUP.style.opacity = 100;
@@ -180,6 +214,9 @@ function showPopUpNotAllChecked(taskToCheck){
 }
 
 function hidePopUp(){
+
+    document.body.style.overflow = "visible";
+
     POPUP.style.visibility = "hidden";
     POPUP.style.opacity = 0;
 

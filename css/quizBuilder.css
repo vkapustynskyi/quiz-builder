@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap');
-* {
-    font-family: 'Recursive', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+#taskWrapper > * {
+    font-family: 'Noto Sans', serif;
 }
 
-*:focus {
+#taskWrapper > *:focus {
     outline: 0;
     border: 0;
 }
@@ -86,7 +87,7 @@ li > * {
     font-weight: normal;
 }
 
-ol.start { 
+ol.start {
     counter-reset: mycounter; 
 }
 
@@ -94,7 +95,7 @@ ol.start li, ol.continue li {
     list-style: none;
 }
 
-ol.start li:before, ol.continue li:before { 
+ol.start li:before, ol.continue li:before {
     content: counter(mycounter) ". "; 
     counter-increment: mycounter;
 }
@@ -105,7 +106,6 @@ ol.start li:before, ol.continue li:before {
 
 .button{
     width: fit-content;
-    font-family: 'Balsamiq Sans', cursive;
     font-size: 18px;
     background-color: #5d16a2;
     color: #fff;
@@ -173,19 +173,20 @@ pure-dialog .pure-dialog-button:focus{
     transition: background-color 0.1s ease-in;
 }
 
-html.noscroll { 
+html.noscroll {
     position: fixed; 
     overflow-y: scroll;
     width: 100%; 
 }
 
 .score {
-    font-family: 'Balsamiq Sans', cursive;
+    visibility: hidden;
+    opacity: 0;
     font-size: 150%;
     font-weight: bold;
     padding: 15px;
     padding-left: 0;
     position: relative;
     width: 90%;
-    display: none;
+    transition: visibility 1.0s ease-in-out, opacity 1.0s ease-in-out;
 }
