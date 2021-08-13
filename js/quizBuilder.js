@@ -10,45 +10,30 @@ POPUPok.onclick = function (){
     hidePopUp();
 }
 
-function shuffle(baseOfTests, htmlWrapperId) {
-
-    let baseFromStorage = localStorage.getItem("base_lesson" + LESSON_NUMBER + htmlWrapperId);
-
-    if (baseFromStorage == null) {
-        baseOfTests.sort(() => Math.random() - 0.5);
-
-        localStorage.setItem("base_lesson" + LESSON_NUMBER + htmlWrapperId, JSON.stringify(baseOfTests));
-        return baseOfTests;
-    } else {
-        baseOfTests = JSON.parse(baseFromStorage);
-        return baseOfTests;
-    }
-}
-
-function buildTest(baseOfTests, htmlWrapperId) {
+// Test
+function buildTest(baseOfTests, taskId) {
     TASK_COUNTER++;
     LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
 
-    let isResultShown = showResultsIfStored(baseOfTests, htmlWrapperId);
+    let isResultShown = showResultsIfStored(baseOfTests, taskId);
     if (isResultShown === true) {
-        INPUTS_ID = document.querySelectorAll("#" + htmlWrapperId + " input").length;
+        INPUTS_ID = document.querySelectorAll("#" + taskId + " input").length;
         return;
     }
 
-    baseOfTests = shuffle(baseOfTests, htmlWrapperId);
+    baseOfTests = shuffle(baseOfTests, taskId);
 
-    let htmlWrapper = document.getElementById(htmlWrapperId);
+    let htmlWrapper = document.getElementById(taskId);
 
     baseOfTests.forEach((question, questionNumber) => {
 
         let options = [];
         let genereted_test_item = [];
 
-
         for (option in question.options) {
             options.push(
                 `<div class="pretty p-default p-round p-thick">
-                    <input type="radio" id="${INPUTS_ID}" class="option" name=lesson${LESSON_NUMBER + htmlWrapperId}Question${questionNumber} value="${option}"/>
+                    <input type="radio" id="${INPUTS_ID}" class="option" name=lesson${LESSON_NUMBER + taskId}Question${questionNumber} value="${option}"/>
                     <div class="state p-danger">
                         <label><b>${option.toUpperCase()}) </b> ${question.options[option]}</label>
                     </div>
@@ -56,30 +41,30 @@ function buildTest(baseOfTests, htmlWrapperId) {
             );
             INPUTS_ID++;
         }
-        genereted_test_item.push(
-            `<li class="questionContainer" style='z-index: ${questionNumber - 2000}'>
-                    <div class="question"> ${question.question} </div>
-                    <div class="answers"> ${options.join('')} </div>
-                </li>`
-        );
+        if (IMG_BASE[question.imgIndex]){
+            genereted_test_item.push(
+                `<li class="questionContainer" style='z-index: ${questionNumber - 2000}'>
+                        ${IMG_BASE[question.imgIndex]}
+                        <div class="question"> ${question.question} </div>
+                        <div class="answers"> ${options.join('')} </div>
+                    </li>`
+            );
+        } else {
+            genereted_test_item.push(
+                `<li class="questionContainer" style='z-index: ${questionNumber - 2000}'>
+                        <div class="question"> ${question.question} </div>
+                        <div class="answers"> ${options.join('')} </div>
+                    </li>`
+            );
+        }
+
         htmlWrapper.insertAdjacentHTML('beforeend', genereted_test_item);
         TESTS_COUNTER++;
     })
-    htmlWrapper.insertAdjacentHTML('beforeend', `  <br><div class="score" id="${htmlWrapperId}-score"></div>
-                          <button class="button" id="${htmlWrapperId}-submit" onclick="checkTest(this)">Перевірити</button>
-                          <button class="button" id="${htmlWrapperId}-showErrors" style="display:none">Показати неправильні</button>`);
+    htmlWrapper.insertAdjacentHTML('beforeend', `  <br><div class="score" id="${taskId}-score"></div>
+                          <button class="button" id="${taskId}-submit" onclick="checkTest(this)">Перевірити</button>
+                          <button class="button" id="${taskId}-showErrors" style="display:none">Показати неправильні</button>`);
 
-}
-
-function showResultsIfStored(baseOfTests, htmlWrapperId){
-    LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
-    let taskInnerHtml = localStorage.getItem("lesson" + LESSON_NUMBER + htmlWrapperId);
-
-    if (taskInnerHtml === null){
-        return false;
-    }
-    document.getElementById(htmlWrapperId).innerHTML = taskInnerHtml;
-    return true;
 }
 
 function setEventListenerOnRadio() {
@@ -199,10 +184,40 @@ function checkTest(buttonFromTaskContainer){
 }
 
 
+// Select
+function buildSelect(){
+
+}
+
+// Other
+
+function showResultsIfStored(baseOfTests, taskId){
+    LESSON_NUMBER = document.getElementById("taskWrapper").getAttribute("lesson");
+    let taskInnerHtml = localStorage.getItem("lesson" + LESSON_NUMBER + taskId);
+
+    if (taskInnerHtml === null){
+        return false;
+    }
+    document.getElementById(taskId).innerHTML = taskInnerHtml;
+    return true;
+}
+
+function shuffle(baseOfTests, taskId) {
+
+    let baseFromStorage = localStorage.getItem("base_lesson" + LESSON_NUMBER + taskId);
+
+    if (baseFromStorage == null) {
+        baseOfTests.sort(() => Math.random() - 0.5);
+
+        localStorage.setItem("base_lesson" + LESSON_NUMBER + taskId, JSON.stringify(baseOfTests));
+        return baseOfTests;
+    } else {
+        baseOfTests = JSON.parse(baseFromStorage);
+        return baseOfTests;
+    }
+}
 
 function showPopUpNotAllChecked(taskToCheck){
-
-    document.body.style.overflow = "hidden";
 
     POPUP.title = capitalizeFirstLetter(taskToCheck.id);
     POPUP.style.visibility = "visible";
@@ -214,8 +229,6 @@ function showPopUpNotAllChecked(taskToCheck){
 }
 
 function hidePopUp(){
-
-    document.body.style.overflow = "visible";
 
     POPUP.style.visibility = "hidden";
     POPUP.style.opacity = 0;

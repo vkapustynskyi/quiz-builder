@@ -49,7 +49,7 @@
 
 li {
     font-size: 120%;
-    margin-top: 30px;
+    margin-top: 50px;
     transition: visibility 2s ease-in-out, margin 1s ease-out, opacity 1s ease-in;
 }
 
@@ -71,6 +71,11 @@ li {
 
 .question{
     font-size: inherit;
+}
+
+.questionImg{
+    vertical-align: middle;
+    margin-bottom: 15px;
 }
 
 .answers{
