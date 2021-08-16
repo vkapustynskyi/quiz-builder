@@ -85,21 +85,26 @@ function updateRadioStateInLocalStorage(radio) {
 }
 
 function markRadioAsCheckedIfIsExistInLocalStorage() {
-    let taskWrapper = document.getElementById("taskWrapper");
-    let questionCounter =
-        taskWrapper.querySelectorAll(" div.task-wrapper ol.task-container li.questionContainer").length;
+    let taskWrappers = document.getElementsByClassName("task-wrapper");
 
-    for (let taskNumber = 1; taskNumber <= TASK_COUNTER; taskNumber++) {
-        for (let questionNumber = 0; questionNumber < questionCounter; questionNumber++) {
-            let item = localStorage.getItem("radio:module" + MODULE_NUMBER + "lesson" + LESSON_NUMBER + "task" + taskNumber + "Question" + questionNumber);
+    for (let i = 0; i < taskWrappers.length; i++) {
 
-            if (item !== null) {
-                let radioById = document.getElementById(item.valueOf());
-                radioById.checked = true;
+        let questionCounter =
+            taskWrappers[i].querySelectorAll(" div.task-wrapper ol.task-container li.questionContainer").length;
+
+        for (let taskNumber = 1; taskNumber <= TASK_COUNTER; taskNumber++) {
+            for (let questionNumber = 0; questionNumber < questionCounter; questionNumber++) {
+                let item = localStorage.getItem("radio:module" + MODULE_NUMBER + "lesson" + LESSON_NUMBER + "task" + taskNumber + "Question" + questionNumber);
+
+                if (item !== null) {
+                    let radioById = document.getElementById(item.valueOf());
+                    radioById.checked = true;
+                }
             }
         }
-
     }
+
+
 }
 
 function checkTest(buttonFromTaskContainer) {
@@ -242,15 +247,18 @@ function updateSelectStateInLocalStorage(select) {
 }
 
 function markSelectAsCheckedIfIsExistInLocalStorage() {
-    let taskWrapper = document.getElementById("taskWrapper");
-    let allSelectsParents = taskWrapper.querySelectorAll("ol.task-container div.select");
+    let taskWrappers = document.getElementsByClassName("task-wrapper");
 
-    for (let i = 0; i < allSelectsParents.length; i++) {
-        let item = localStorage.getItem("select:" + allSelectsParents[i].getAttribute("name"));
+    for (let i = 0; i < taskWrappers.length; i++) {
+        let allSelectsParents = taskWrappers[i].querySelectorAll("ol.task-container div.select");
 
-        if (item !== null) {
-            let checkedOption = allSelectsParents[i].querySelector("select option[value=" + item.valueOf() + "]");
-            checkedOption.selected = true;
+        for (let i = 0; i < allSelectsParents.length; i++) {
+            let item = localStorage.getItem("select:" + allSelectsParents[i].getAttribute("name"));
+
+            if (item !== null) {
+                let checkedOption = allSelectsParents[i].querySelector("select option[value=" + item.valueOf() + "]");
+                checkedOption.selected = true;
+            }
         }
     }
 
@@ -349,17 +357,19 @@ function buildInput(baseOfInputTests, taskId) {
 }
 
 function markTextInputAsCheckedIfIsExistInLocalStorage() {
-    let taskWrapper = document.getElementById("taskWrapper");
-    let allTextInputs = taskWrapper.querySelectorAll("input[type='text']");
+    let taskWrappers = document.getElementsByClassName("task-wrapper");
 
-    for (let i = 0; i < allTextInputs.length; i++) {
-        let item = localStorage.getItem("input:" + allTextInputs[i].id);
-        if (item !== null) {
-            allTextInputs[i].value = item;
-        } else {
-            let dataValue = allTextInputs[i].getAttribute("data-value");
-            if (dataValue !== null){
-                allTextInputs[i].value = dataValue;
+    for (let i = 0; i < taskWrappers.length; i++) {
+        let allTextInputs = taskWrappers[i].querySelectorAll("input[type='text']");
+        for (let i = 0; i < allTextInputs.length; i++) {
+            let item = localStorage.getItem("input:" + allTextInputs[i].id);
+            if (item !== null) {
+                allTextInputs[i].value = item;
+            } else {
+                let dataValue = allTextInputs[i].getAttribute("data-value");
+                if (dataValue !== null){
+                    allTextInputs[i].value = dataValue;
+                }
             }
         }
     }
