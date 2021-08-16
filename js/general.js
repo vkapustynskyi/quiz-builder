@@ -72,7 +72,6 @@ const BASE_OF_Task_With_Images = [
             c: "pronoun",
             d: "noun"
         },
-        imgIndex: 2,
         correctAnswer: "a"
     },
     {
@@ -83,7 +82,6 @@ const BASE_OF_Task_With_Images = [
             c: "activity",
             d: "acting"
         },
-        imgIndex: 3,
         correctAnswer: "a"
     }
 
@@ -215,6 +213,80 @@ const BASE_OF_Task_Select = [
         correctAnswer: "b"
     }
 ];
+const BASE_OF_Task_InputText = [
+    {
+        question: "What I'd love to share to somebody who wanted to take __${input#text}__ this lifestyle.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "By doing the small space lifestyle you're gonna make choices and you end __${input#text}__ becoming really conscious of what you bring into your life.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "Round tables can be really wonderful because they don't have corners and __${input#text}__ .",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "The __${input#text}__ actually makes you feel like it's taking up less volume.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "We __${input#text}__ transforming furniture and both of the bedrooms because it allows us flexibility.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "Open __${input#text}__ is another one.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "I have this beautiful object that I'm looking __${input#text}__, but I can also use it.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "They're flexible, the can move __${input#text}__, any direction and can be folded up and packed __${input#text}__ and they’re really my secret to how I pull this all off.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "__${input#text}__ a moment to think about what you have.",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    },
+    {
+        question: "And if there's __${input#text}__ one thing you can get rid of today, do it!",
+        correctAnswers: {
+            a: ["noun", "pronoun", "adjective", "adverb"],
+            b: ["noun", "pronoun", "adjective", "adverb"]
+        }
+    }
+
+];
+
 
 const IMG_BASE = ['<img class="questionImg" src="src/1.jpg">',
     '<img class="questionImg" src="src/2.jpg">'];
@@ -237,4 +309,5 @@ window.onload = function () {
     build(BASE_OF_Task1, "task1");
     build(BASE_OF_Task_With_Images, "task2");
     build(BASE_OF_Task_Select, "task3");
+    build(BASE_OF_Task_InputText, "task4");
 }

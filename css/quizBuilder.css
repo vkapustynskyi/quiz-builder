@@ -47,6 +47,8 @@
     top: 3px;
 }
 
+
+
 li {
     font-size: 120%;
     margin-top: 50px;
@@ -148,6 +150,19 @@ ol[data-type="select"] {
     left: 3px;
 }
 
+
+/* Input */
+span > input[type="text"]{
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 3px 5px 3px 5px;
+}
+
+.right-wrong-input-img{
+    position: relative;
+    top: 3px;
+    margin-left: 3px;
+}
 
 
 /* Other */
